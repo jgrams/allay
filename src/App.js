@@ -10,7 +10,6 @@ class App extends Component {
       <div>
         <h1>Tension</h1>
         <div className="header-bar" />
-        <app-heroes />
         <Heroes />
         <Game />
       </div>
