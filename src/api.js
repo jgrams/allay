@@ -30,6 +30,25 @@ const heroService = {
     });
   },
 
+  game(game) {
+    return new Promise((resolve, reject) => {
+      fetch(`${baseAPI}/game`, {
+        method: 'PUT',
+        body: JSON.stringify(game),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(result => result.json())
+        .then(json => resolve(json))
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+
   update(hero) {
     return new Promise((resolve, reject) => {
       fetch(`${baseAPI}/hero`, {

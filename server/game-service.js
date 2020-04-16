@@ -1,14 +1,15 @@
-const Hero = require('./hero-model');
+const Game = require('./game-model');
 const ReadPreference = require('mongodb').ReadPreference;
 
 require('./mongo').connect();
 
 function get(req, res) {
-  const docquery = Hero.find({}).read(ReadPreference.NEAREST);
+  const {  }
+  const docquery = Game.find({}).read(ReadPreference.NEAREST);
   docquery
     .exec()
-    .then(heroes => {
-      res.json(heroes);
+    .then(games => {
+      res.json(games);
     })
     .catch(err => {
       res.status(500).send(err);
@@ -16,13 +17,13 @@ function get(req, res) {
 }
 
 function create(req, res) {
-  const { number_players } = req.body;
+  const { id, name, saying } = req.body;
 
-  const hero = new Hero({ number_players });
-  hero
+  const game = new Game({ id, name, saying });
+  game
     .save()
     .then(() => {
-      res.json(hero);
+      res.json(game);
     })
     .catch(err => {
       res.status(500).send(err);
@@ -32,11 +33,11 @@ function create(req, res) {
 function update(req, res) {
   const { id, name, saying } = req.body;
 
-  Hero.findOne({ id })
-    .then(hero => {
-      hero.name = name;
-      hero.saying = saying;
-      hero.save().then(res.json(hero));
+  Game.findOne({ id })
+    .then(game => {
+      game.name = name;
+      game.saying = saying;
+      game.save().then(res.json(game));
     })
     .catch(err => {
       res.status(500).send(err);
@@ -46,9 +47,9 @@ function update(req, res) {
 function destroy(req, res) {
   const { id } = req.params;
 
-  Hero.findOneAndRemove({ id })
-    .then(hero => {
-      res.json(hero);
+  Game.findOneAndRemove({ id })
+    .then(game => {
+      res.json(game);
     })
     .catch(err => {
       res.status(500).send(err);

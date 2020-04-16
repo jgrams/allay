@@ -1,40 +1,31 @@
 import React from 'react';
 
-const EditHero = props => {
-  if (props.selectedHero) {
+const EditGame = props => {
+  if (props.game) {
     return (
       <div>
         <div className="editfields">
           <div>
-            <label>id: </label>
-            {props.addingHero
+            <label>Number Of Players: </label>
+            {props.addingGame
               ? <input
                   type="number"
                   min="2"
-                  name="id"
-                  placeholder="id"
-                  value={props.selectedHero.id}
+                  name="players"
+                  placeholder="players"
+                  value={props.game.players}
                   onChange={props.onChange}
                 />
               : <label className="value">
-                  {props.selectedHero.id}
+                  {props.game.players}
                 </label>}
           </div>
           <div>
             <label>name: </label>
             <input
               name="name"
-              value={props.selectedHero.name}
+              value={props.game.name}
               placeholder="name"
-              onChange={props.onChange}
-            />
-          </div>
-          <div>
-            <label>saying: </label>
-            <input
-              name="saying"
-              value={props.selectedHero.saying}
-              placeholder="saying"
               onChange={props.onChange}
             />
           </div>
@@ -48,4 +39,4 @@ const EditHero = props => {
   }
 };
 
-export default EditHero;
+export default EditGame;
