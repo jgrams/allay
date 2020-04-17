@@ -4,7 +4,6 @@ const ReadPreference = require('mongodb').ReadPreference;
 require('./mongo').connect();
 
 function get(req, res) {
-  const {  }
   const docquery = Game.find({}).read(ReadPreference.NEAREST);
   docquery
     .exec()
@@ -17,9 +16,10 @@ function get(req, res) {
 }
 
 function create(req, res) {
-  const { id, name, saying } = req.body;
-
-  const game = new Game({ id, name, saying });
+  const { numberPlayers, timeLimit } = req.body;
+  const game = new Game({ numberPlayers, 
+                          timeLimit, 
+                          admin: Math.random().toString(36).substring(2, 15) });
   game
     .save()
     .then(() => {

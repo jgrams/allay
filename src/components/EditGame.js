@@ -7,27 +7,25 @@ const EditGame = props => {
         <div className="editfields">
           <div>
             <label>Number Of Players: </label>
-            {props.addingGame
-              ? <input
-                  type="number"
-                  min="2"
-                  name="players"
-                  placeholder="players"
-                  value={props.game.players}
-                  onChange={props.onChange}
-                />
-              : <label className="value">
-                  {props.game.players}
-                </label>}
+            <input
+                type="number"
+                min="2"
+                name="numberPlayers"
+                placeholder="Number of Players"
+                value={props.game.numberPlayers}
+                onChange={props.onChange}
+              />
           </div>
           <div>
-            <label>name: </label>
-            <input
-              name="name"
-              value={props.game.name}
-              placeholder="name"
-              onChange={props.onChange}
-            />
+            <label>Time Limit: </label>
+            <select name="timeLimit" 
+                    value={props.game.timeLimit} 
+                    onChange={props.onChange}>
+              <option value="30">Lightning Rounds</option>
+              <option value="90">Standard Game</option>
+              <option value="180">Long Turns</option>
+              <option value="8000000">Practically Forever</option>
+            </select>
           </div>
         </div>
         <button onClick={props.onCancel}>Cancel</button>

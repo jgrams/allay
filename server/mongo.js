@@ -7,7 +7,8 @@ mongoose.Promise = global.Promise;
 const mongoUri = `mongodb://localhost:27017/${env.dbName}`;
 
 function connect() {
-  return mongoose.connect(mongoUri, { auth: { user: env.dbName, password: env.key }});
+  // return mongoose.connect(mongoUri, { auth: { user: env.dbName, password: env.key }});
+  mongoose.connect(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});
 }
 
 module.exports = {

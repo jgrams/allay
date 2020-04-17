@@ -8,44 +8,23 @@ class Game extends Component {
     super();
 
     this.state = {
-      games: [],
       creatingGame: false
     };
 
     this.handleEnableAddMode = this.handleEnableAddMode.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
   }
 
   componentDidMount() {
     api.get().then(json => this.setState({ heroes: json }));
   }
 
-  handleSelect(hero) {
-    this.setState({ selectedGame: hero });
-  }
-
-  handleDelete(event, hero) {
-    event.stopPropagation();
-
-    api.destroy(hero).then(() => {
-      let heroes = this.state.heroes;
-      heroes = heroes.filter(h => h !== hero);
-      this.setState({ heroes: heroes });
-
-      if (this.selectedGame === hero) {
-        this.setState({ selectedGame: null });
-      }
-    });
-  }
-
   handleEnableAddMode() {
     this.setState({
       addingGame: true,
-      game: { players: '', timeLimit: '' }
+      game: { numberPlayers: '', timeLimit: '90' }
     });
   }
 
@@ -58,11 +37,11 @@ class Game extends Component {
 
     if (this.state.addingGame) {
       api
-        .game(this.state.game)
+        .create(game)
         .then(result => {
           console.log('Successfully created!');
           this.setState({
-            game: result,
+            game: game,
             addingGame: false,
             currentGame: true
           });
@@ -85,14 +64,6 @@ class Game extends Component {
 
   render() {
     return (
-      <div>
-        <ul className="games">
-          {this.state.games.map(game => {
-            return (
-              <div>Game</div>
-            );
-          })}
-        </ul>
         <div className="editarea">
           <button onClick={this.handleEnableAddMode}>Create A New Game</button>
           <EditGame
@@ -103,7 +74,6 @@ class Game extends Component {
             onCancel={this.handleCancel}
           />
         </div>
-      </div>
     );
   }
 }
