@@ -1,7 +1,7 @@
 import React from 'react';
 
-const EditGame = props => {
-  if (props.createGame) {
+const AddGame = props => {
+  if (props.addGame || props.editGame) {
     return (
       <div>
         <div className="editfields">
@@ -37,4 +37,4 @@ const EditGame = props => {
   }
 };
 
-export default EditGame;
+export default AddGame;

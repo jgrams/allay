@@ -4,7 +4,7 @@ const ReadPreference = require('mongodb').ReadPreference;
 require('./mongo').connect();
 
 function get(req, res) {
-  const docquery = Game.find({req._id}).read(ReadPreference.NEAREST);
+  const docquery = Game.find({}).read(ReadPreference.NEAREST);
   docquery
     .exec()
     .then(games => {
@@ -17,9 +17,15 @@ function get(req, res) {
 
 function create(req, res) {
   const { numberPlayers, timeLimit } = req.body;
+  const players = new Array();
+  for (var i = numberPlayers - 1; i > 0; i--) {
+    players.push({ id: i, name: '', slug: Math.random().toString(36).substring(2, 6)})
+  }
+  console.log(players);
   const game = new Game({ numberPlayers, 
                           timeLimit, 
-                          admin: Math.random().toString(36).substring(2, 15) });
+                          admin: Math.random().toString(36).substring(2, 15),
+                          players: players });
   game
     .save()
     .then(() => {
@@ -31,12 +37,12 @@ function create(req, res) {
 }
 
 function update(req, res) {
-  const { id, name, saying } = req.body;
+  const { _id, admin, numberPlayers, timeLimit } = req.body;
 
-  Game.findOne({ id })
+  Game.findOne({ _id, admin })
     .then(game => {
-      game.name = name;
-      game.saying = saying;
+      game.numberPlayers = numberPlayers;
+      game.timeLimit = timeLimit;
       game.save().then(res.json(game));
     })
     .catch(err => {
