@@ -28,7 +28,20 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    api.get().then(json => this.setState({ games: json }));
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    if (urlParams.has('id')) {
+      const id = urlParams.get('id');
+      if (urlParams.has('admin')) {
+        api
+          .adminGet({id: id, admin: urlParams.get('admin')})
+          .then(json => this.setState({ game: json, admin: true, currentGame: true}));
+      } else if (urlParams.has('player')) { 
+        api
+          .get({id: id})
+          .then(json => this.setState({ game: json, currentGame: true }));
+      }
+    }
   }
 
   handleEnableAddMode() {
@@ -105,7 +118,9 @@ class Game extends Component {
       button = <button onClick={this.handleEnableAddMode}>Create A New Game</button>;
       cancelAction = this.handleAddCancel;
     } else if (this.state.admin) {
-      button = <button onClick={this.handleEnableEditMode}>Edit Game Settings</button>;
+      if (!this.state.editGame) {
+        button = <button onClick={this.handleEnableEditMode}>Edit Game Settings</button>;
+      }
       cancelAction = this.handleEditCancel;
     }
 

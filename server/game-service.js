@@ -4,11 +4,25 @@ const ReadPreference = require('mongodb').ReadPreference;
 require('./mongo').connect();
 
 function get(req, res) {
-  const docquery = Game.find({}).read(ReadPreference.NEAREST);
-  docquery
-    .exec()
-    .then(games => {
-      res.json(games);
+  const { id } = req.params;
+  Game
+    .findOne({_id: id})
+    .read(ReadPreference.NEAREST)
+    .then(game => {
+      res.json(game);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+}
+
+function adminGet(req, res) {
+  const { id, admin } = req.params;
+  Game
+    .findOne({_id: id, admin: admin})
+    .read(ReadPreference.NEAREST)
+    .then(game => {
+      res.json(game);
     })
     .catch(err => {
       res.status(500).send(err);
@@ -62,4 +76,4 @@ function destroy(req, res) {
     });
 }
 
-module.exports = { get, create, update, destroy };
+module.exports = { get, create, update, destroy, adminGet };

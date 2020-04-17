@@ -3,8 +3,12 @@ const router = express.Router();
 
 const gameService = require('../game-service');
 
-router.get('/game', (req, res) => {
+router.get('/game/:id', (req, res) => {
   gameService.get(req, res);
+});
+
+router.get('/game/:id/:admin', (req, res) => {
+  gameService.adminGet(req, res);
 });
 
 router.post('/game', (req, res) => {
