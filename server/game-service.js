@@ -4,7 +4,7 @@ const ReadPreference = require('mongodb').ReadPreference;
 require('./mongo').connect();
 
 function get(req, res) {
-  const docquery = Game.find({}).read(ReadPreference.NEAREST);
+  const docquery = Game.find({req._id}).read(ReadPreference.NEAREST);
   docquery
     .exec()
     .then(games => {

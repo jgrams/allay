@@ -1,7 +1,7 @@
 import React from 'react';
 
 const EditGame = props => {
-  if (props.game) {
+  if (props.createGame) {
     return (
       <div>
         <div className="editfields">

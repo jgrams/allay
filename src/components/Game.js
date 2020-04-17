@@ -8,7 +8,8 @@ class Game extends Component {
     super();
 
     this.state = {
-      creatingGame: false
+      addingGame: false,
+      currentGame: false
     };
 
     this.handleEnableAddMode = this.handleEnableAddMode.bind(this);
@@ -24,7 +25,14 @@ class Game extends Component {
   handleEnableAddMode() {
     this.setState({
       addingGame: true,
-      game: { numberPlayers: '', timeLimit: '90' }
+      game: { numberPlayers: '', timeLimit: '90' },
+      admin: true
+    });
+  }
+
+  handleEnableEditMode() {
+    this.setState({
+      editingGame: true,
     });
   }
 
@@ -41,7 +49,7 @@ class Game extends Component {
         .then(result => {
           console.log('Successfully created!');
           this.setState({
-            game: game,
+            game: result,
             addingGame: false,
             currentGame: true
           });
@@ -64,6 +72,7 @@ class Game extends Component {
 
   render() {
     return (
+      <div>
         <div className="editarea">
           <button onClick={this.handleEnableAddMode}>Create A New Game</button>
           <EditGame
@@ -74,6 +83,7 @@ class Game extends Component {
             onCancel={this.handleCancel}
           />
         </div>
+      </div>
     );
   }
 }
