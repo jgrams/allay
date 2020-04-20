@@ -1,7 +1,10 @@
 import React from 'react';
+import ShareGame from './ShareGame';
 
-const AddGame = props => {
-  if (props.addGame || props.editGame) {
+const Admin = props => {
+  if (!props.game) {
+      return <button onClick={props.newGame}>Create A New Game</button>;
+  } else if (props.addGame) {
     return (
       <div>
         <div className="editfields">
@@ -10,6 +13,7 @@ const AddGame = props => {
             <input
                 type="number"
                 min="2"
+                max="100"
                 name="numberPlayers"
                 placeholder="Number of Players"
                 value={props.game.numberPlayers}
@@ -28,13 +32,20 @@ const AddGame = props => {
             </select>
           </div>
         </div>
-        <button onClick={props.onCancel}>Cancel</button>
-        <button onClick={props.onSave}>Save</button>
+        <button onClick={props.cancelNewGame}>Cancel</button>
+        <button onClick={props.createGame}>Save</button>
       </div>
     );
-  } else {
+  } else if (!props.game.admin) {
     return <div />;
+  } else {
+    return <ShareGame
+            game={props.game}
+            shareGame={props.shareGame}
+            onCancel={props.handleShareCancel}
+            onClick={props.handleShare}
+          />;
   }
 };
 
-export default AddGame;
+export default Admin;

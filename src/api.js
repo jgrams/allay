@@ -39,7 +39,7 @@ const gameService = {
 
   get(game) {
     return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/game/${game.id}`, {
+      fetch(`${baseAPI}/game/${game.id}/${game.player}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -56,7 +56,7 @@ const gameService = {
 
   adminGet(game) {
     return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/game/${game.id}/${game.admin}`, {
+      fetch(`${baseAPI}/game/${game.id}/${game.player}/${game.admin}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -70,6 +70,60 @@ const gameService = {
         });
     });
   },
+
+  name(game) {
+    return new Promise((resolve, reject) => {
+      fetch(`${baseAPI}/game/name`, {
+        method: 'POST',
+        body: JSON.stringify(game),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(result => result.json())
+        .then(json => resolve(json))
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  player(game) {
+    return new Promise((resolve, reject) => {
+      fetch(`${baseAPI}/game/${game.id}/player/${game.player}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(result => result.json())
+        .then(json => resolve(json))
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  setPlayerName(game) {
+    return new Promise((resolve, reject) => {
+      fetch(`${baseAPI}/game/name`, {
+        method: 'POST',
+        body: JSON.stringify(game),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(result => result.json())
+        .then(json => resolve(json))
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
 };
 
 export default gameService;

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
-import AddGame from './AddGame';
+import Admin from './Admin';
 import PlayGame from './PlayGame';
-import ShareGame from './ShareGame';
 import api from '../api';
 
 class Game extends Component {
@@ -11,49 +10,49 @@ class Game extends Component {
 
     this.state = {
       addGame: false,
-      editGame: false,
-      currentGame: false,
-      shareGame: false,
-      admin: false,
+      currentGame: false
     };
 
-    this.handleEnableAddMode = this.handleEnableAddMode.bind(this);
-    this.handleEnableEditMode = this.handleEnableEditMode.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
+    this.newGame = this.newGame.bind(this);
+    this.createGame = this.createGame.bind(this);
+    this.handleGameChange = this.handleGameChange.bind(this);
+    this.handlePlayerChange = this.handlePlayerChange.bind(this);
     this.handleAddCancel = this.handleAddCancel.bind(this);
-    this.handleEditCancel = this.handleEditCancel.bind(this);
-    this.handleShareCancel = this.handleShareCancel.bind(this);
-    this.handleShare = this.handleShare.bind(this);
   }
 
   componentDidMount() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    if (urlParams.has('id')) {
+    if (urlParams.has('id') && urlParams.has('player')) {
       const id = urlParams.get('id');
+      const player = urlParams.get('player')
+        api.player({id: id, 
+                    player: player})
+           .then(json => this.setState({player: json.players[0]}));
       if (urlParams.has('admin')) {
-        api
-          .adminGet({id: id, admin: urlParams.get('admin')})
-          .then(json => this.setState({ game: json, admin: true, currentGame: true}));
-      } else if (urlParams.has('player')) { 
-        api
-          .get({id: id})
-          .then(json => this.setState({ game: json, currentGame: true }));
+        api.adminGet({id: id, 
+                      player: player, 
+                      admin: urlParams.get('admin')})
+           .then(json => this.setGame(json));
+      } else { 
+        api.get({id: id, 
+                 player: player})
+           .then(json => this.setGame(json, player));   
       }
     }
   }
 
-  handleEnableAddMode() {
+  setGame(game, playerSlug) {
     this.setState({
-      addGame: true,
-      game: { numberPlayers: '', timeLimit: '90' }
+      game: game, 
+      currentGame: true,
     });
   }
 
-  handleEnableEditMode() {
+  newGame() {
     this.setState({
-      editGame: true,
+      addGame: true,
+      game: { numberPlayers: 3, timeLimit: '90' }
     });
   }
 
@@ -61,96 +60,61 @@ class Game extends Component {
     this.setState({ addGame: false, game: null });
   }
 
-  handleEditCancel() {
-    this.setState({ editGame: false });
-  }
-
-  handleShareCancel() {
-    this.setState({ shareGame: false });
-  }
-
-  handleShare() {
-    this.setState({ shareGame: true });
-  }
-
-  handleSave() {
+  createGame() {
     let game = this.state.game;
-
-    if (this.state.addGame) {
-      api
-        .create(game)
-        .then(result => {
-          console.log('Successfully created!');
-          this.setState({
-            game: result,
-            addGame: false,
-            currentGame: true,
-            admin: true,
-            shareGame: true,
-          });
-        })
-        .catch(err => {
-          console.log(err);
+    api
+      .create(game)
+      .then(result => {
+        this.setState({
+          game: result,
+          addGame: false,
+          shareGame: true,
+          currentGame: true,
+          player: result.players[0]
         });
-    } else {
-      api
-        .update(this.state.game)
-        .then(result => {
-          this.setState({
-            game: result,
-            editGame: false
-          });
-        })
-        .catch(err => {});
-    }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  handleOnChange(event) {
+  handleGameChange(event) {
     let game = this.state.game;
     game[event.target.name] = event.target.value;
     this.setState({ game: game });
   }
 
+  handlePlayerChange(event) {
+    let player = this.state.player;
+    player[event.target.name] = event.target.value;
+    this.setState({ player: player });
+  }
+
   render() {
-    let button;
-    let cancelAction;
-    if (!this.state.currentGame ) {
-      button = <button onClick={this.handleEnableAddMode}>Create A New Game</button>;
-      cancelAction = this.handleAddCancel;
-    } else if (this.state.admin) {
-      if (!this.state.editGame) {
-        button = <button onClick={this.handleEnableEditMode}>Edit Game Settings</button>;
-      }
-      cancelAction = this.handleEditCancel;
+    let game;
+    if (this.state.game && this.state.player) {
+      game = <PlayGame
+            game={this.state.game}
+            player={this.state.player}
+            submitTurn={this.submitTurn}
+            handlePlayerChange={this.handlePlayerChange} />
     }
 
     return (
       <div>
         <div className="editarea">
-          {button}
-          <AddGame
+          <Admin
             addGame={this.state.addGame}
-            editGame={this.state.editGame}
-            onChange={this.handleOnChange}
+            onChange={this.handleGameChange}
             game={this.state.game}
-            onSave={this.handleSave}
-            onCancel={cancelAction}
-          />
-          <ShareGame
-            game={this.state.game}
-            currentGame={this.state.currentGame}
+            newGame={this.newGame}
+            createGame={this.createGame}
+            cancelNewGame={this.handleAddCancel}
             shareGame={this.state.shareGame}
-            onCancel={this.handleShareCancel}
-            onClick={this.handleShare}
-            admin={this.state.admin}
           />
         </div>
         <div className="playarea">
-          <PlayGame
-            game={this.state.game}
-            submitTurn={this.submitTurn}
-            currentGame={this.state.currentGame}
-          />
+          {game}
         </div>
       </div>
     );

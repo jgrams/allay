@@ -1,27 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import api from '../api';
 
-const PlayGame = props => {
-  if (props.currentGame) {
-    return (
-      <div>
-        <div className="playGame">
-          <div>
-            <label for="name">Put Your Game Name On</label>
-            <input name='name' 
-                   placeholder="Your Name" 
-                   value={props.name}
-                   onChange={props.onChange}>
-            </input>
-            <button onClick={props.onClick}>I'm Ready</button>
-          </div>
-          <div>Game On</div>
+
+function PlayGame(props) {
+
+  return (
+    <div>
+      <div className="playGame">
+        <div>
+          <label for="name">Put Your Game Name On:</label>
+          <input name='name'
+                 placeholder="Your Name" 
+                 value={props.player.name}
+                 onChange={props.handlePlayerChange}>
+          </input>
+          <button onClick={() => props.submitPlayerChange}>Let's Play!</button>
         </div>
       </div>
-    );
-  }
-  else {
-    return <div />;
-  }
+    </div>
+  );
 };
 
 export default PlayGame;
