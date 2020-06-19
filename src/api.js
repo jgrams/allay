@@ -71,27 +71,9 @@ const gameService = {
     });
   },
 
-  name(game) {
-    return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/game/name`, {
-        method: 'POST',
-        body: JSON.stringify(game),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(result => result.json())
-        .then(json => resolve(json))
-        .catch(err => {
-          reject(err);
-        });
-    });
-  },
-
   player(game) {
     return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/game/${game.id}/player/${game.player}`, {
+      fetch(`${baseAPI}/player/${game.id}/${game.player}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -106,11 +88,11 @@ const gameService = {
     });
   },
 
-  setPlayerName(game) {
+  name(player) {
     return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/game/name`, {
+      fetch(`${baseAPI}/player/name`, {
         method: 'POST',
-        body: JSON.stringify(game),
+        body: JSON.stringify(player),
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'

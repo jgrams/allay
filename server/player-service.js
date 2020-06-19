@@ -8,9 +8,23 @@ function get(req, res) {
   Game
     .findOne({_id: id, "players.slug": player}, { "players.$": 1  })
     .read(ReadPreference.NEAREST)
+    .then(player => {
+      console.log(player)
+      res.json(player);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+}
+
+function name(req, res) {
+  const { _id, player } = req.body;
+  Game.findOne({ _id }, { "admin": 0, "players.slug": 0  })
     .then(game => {
-      console.log(game)
-      res.json(game);
+      var updatedPlayer = game.players.id(player._id);
+      updatedPlayer.name = player.name;
+      updatedPlayer.ready = true;
+      game.save().then(res.json(game));
     })
     .catch(err => {
       res.status(500).send(err);
@@ -18,4 +32,4 @@ function get(req, res) {
 }
 
 
-module.exports = { get };
+module.exports = { get, name };

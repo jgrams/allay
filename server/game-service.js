@@ -49,44 +49,4 @@ function create(req, res) {
     });
 }
 
-function setName(req, res) {
-  const { _id, player, name } = req.body;
-
-  Game.findOne({ _id, player }, { "players._id": 0, "admin": 0  })
-    .then(game => {
-      var player = game.players.id(player._id);
-      player.name = name;
-      game.save().then(res.json(game));
-    })
-    .catch(err => {
-      res.status(500).send(err);
-    });
-}
-
-function update(req, res) {
-  const { _id, admin, numberPlayers, timeLimit } = req.body;
-
-  Game.findOne({ _id, admin })
-    .then(game => {
-      game.numberPlayers = numberPlayers;
-      game.timeLimit = timeLimit;
-      game.save().then(res.json(game));
-    })
-    .catch(err => {
-      res.status(500).send(err);
-    });
-}
-
-function destroy(req, res) {
-  const { id } = req.params;
-
-  Game.findOneAndRemove({ id })
-    .then(game => {
-      res.json(game);
-    })
-    .catch(err => {
-      res.status(500).send(err);
-    });
-}
-
-module.exports = { get, create, update, destroy, adminGet, setName };
+module.exports = { get, create, adminGet };

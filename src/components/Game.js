@@ -26,9 +26,9 @@ class Game extends Component {
     if (urlParams.has('id') && urlParams.has('player')) {
       const id = urlParams.get('id');
       const player = urlParams.get('player')
-        api.player({id: id, 
-                    player: player})
-           .then(json => this.setState({player: json.players[0]}));
+      api.player({id: id, 
+                  player: player})
+         .then(json => this.setState({player: json.players[0]}));
       if (urlParams.has('admin')) {
         api.adminGet({id: id, 
                       player: player, 
@@ -37,12 +37,12 @@ class Game extends Component {
       } else { 
         api.get({id: id, 
                  player: player})
-           .then(json => this.setGame(json, player));   
+           .then(json => this.setGame(json));   
       }
     }
   }
 
-  setGame(game, playerSlug) {
+  setGame(game) {
     this.setState({
       game: game, 
       currentGame: true,

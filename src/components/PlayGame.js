@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import api from '../api';
+import Turn from './Turn';
+import Name from './Name';
 
 
 function PlayGame(props) {
+  var displayForm = props.game.round === 0 ? <Name player={props.player} game={props.game} /> : 
+                                             <Turn player={props.player} game={props.game} />
 
   return (
     <div>
       <div className="playGame">
-        <div>
-          <label for="name">Put Your Game Name On:</label>
-          <input name='name'
-                 placeholder="Your Name" 
-                 value={props.player.name}
-                 onChange={props.handlePlayerChange}>
-          </input>
-          <button onClick={() => props.submitPlayerChange}>Let's Play!</button>
-        </div>
+        { displayForm }
       </div>
     </div>
   );
