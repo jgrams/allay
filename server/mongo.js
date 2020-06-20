@@ -4,13 +4,14 @@ const env = require('./env/environment');
 mongoose.Promise = global.Promise;
 
 // const mongoUri = `mongodb://${env.dbName}.documents.azure.com:${env.cosmosPort}/?ssl/=true`;
-const mongoUri = `mongodb://${env.dbName}:${env.port}/?replicaSet=${env.replicaSet}`;
+const mongoUri = `mongodb://${env.host}:${env.port}/${env.db}?replicaSet=${env.replicaSet}`;
 
-console.log(mongoUri);
+const options = {useNewUrlParser: true, 
+	             useUnifiedTopology: true}
 
 function connect() {
   // return mongoose.connect(mongoUri, { auth: { user: env.dbName, password: env.key }});
-  mongoose.connect(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});;
 }
 
 module.exports = {

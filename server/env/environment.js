@@ -1,12 +1,14 @@
-const port = 27107; // replace with your port
+const port = 27017; // replace with your port
 // const dbName = 'your-cosmos-db-name-goes-here';
-const dbName = 'localhost';
+const host = 'localhost';
+const db = 'db';
 const replicaSet = 'allay';
 const key = 'your-key-goes-here';
 
 module.exports = {
   port,
   replicaSet,
-  dbName,
-  key
+  db,
+  key,
+  host
 };
