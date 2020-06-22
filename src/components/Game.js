@@ -10,7 +10,8 @@ class Game extends Component {
 
     this.state = {
       addGame: false,
-      currentGame: false
+      currentGame: false,
+      endedGame: false
     };
 
     this.newGame = this.newGame.bind(this);
@@ -96,7 +97,7 @@ class Game extends Component {
       game = <PlayGame
             game={this.state.game}
             player={this.state.player}
-            submitTurn={this.submitTurn}
+            setGame={this.setGame}
             handlePlayerChange={this.handlePlayerChange} />
     }
 
