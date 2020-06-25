@@ -16,6 +16,7 @@ class Game extends Component {
 
     this.newGame = this.newGame.bind(this);
     this.createGame = this.createGame.bind(this);
+    this.setGame = this.setGame.bind(this);
     this.handleGameChange = this.handleGameChange.bind(this);
     this.handlePlayerChange = this.handlePlayerChange.bind(this);
     this.handleAddCancel = this.handleAddCancel.bind(this);

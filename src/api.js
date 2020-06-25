@@ -106,6 +106,24 @@ const gameService = {
     });
   },
 
+  ready(game) {
+    return new Promise((resolve, reject) => {
+      fetch(`${baseAPI}/ready/${game.id}`, {
+        method: 'GET',
+        body: JSON.stringify(game),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(result => result.json())
+        .then(json => resolve(json))
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
 };
 
 export default gameService;

@@ -49,4 +49,22 @@ function create(req, res) {
     });
 }
 
+function ready(req, res) {
+  const { gameId } = req.params;
+  let watchedOperations = {
+    $match: { $and: [
+        { "game.players.ready": { $eq: true } },
+        { operationType: "update" }
+      ]
+    },
+    $group: { _id: "$cust_id", total: { $sum: "$amount" } }
+  };
+
+  var cursor = Game.watch({ fullDocument: 'updateLookup' })
+  cursor.on('change', data => 
+    console.log(new Date(), data.fullDocument)
+  );
+  const { _id } = req.body;
+}
+
 module.exports = { get, create, adminGet };

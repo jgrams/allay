@@ -9,7 +9,6 @@ function get(req, res) {
     .findOne({_id: id, "players.slug": player}, { "players.$": 1  })
     .read(ReadPreference.NEAREST)
     .then(player => {
-      console.log(player)
       res.json(player);
     })
     .catch(err => {
@@ -19,9 +18,6 @@ function get(req, res) {
 
 function name(req, res) {
   const { _id, player } = req.body;
-  Game.watch().
-    on('change', data => console.log(new Date(), data));
-
   Game.findOne({ _id }, { "admin": 0, "players.slug": 0  })
     .then(game => {
       var updatedPlayer = game.players.id(player._id);
@@ -36,18 +32,21 @@ function name(req, res) {
     });
 }
 
-function ready(req, res) {
-  const { _id, player } = req.body;
-  Game.findOne({ _id }, { "admin": 0, "players.slug": 0  })
-    .then(game => {
-      var updatedPlayer = game.players.id(player._id);
-      updatedPlayer.name = player.name;
-      updatedPlayer.ready = true;
-      game.save().then(res.json(game));
-    })
-    .catch(err => {
-      res.status(500).send(err);
-    });
+function watchReady(req, res) {
+  let watchedOperations = {
+    $match: { $and: [
+        { "game.players.ready": { $eq: true } },
+        { operationType: "update" }
+      ]
+    },
+    $group: { _id: "$cust_id", total: { $sum: "$amount" } }
+  };
+
+  var cursor = Game.watch({ fullDocument: 'updateLookup' })
+  cursor.on('change', data => 
+    console.log(new Date(), data.fullDocument)
+  );
+  const { _id } = req.body;
 }
 
 

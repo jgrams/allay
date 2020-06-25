@@ -6,7 +6,9 @@ function Name(props) {
     api
       .name({_id: props.game._id, player: props.player})
       .then(result => {
+        console.log(result)
         props.setGame(result);
+        console.log(props);
       })
       .catch(err => {
         console.log(err);
@@ -15,7 +17,7 @@ function Name(props) {
 
   return (
     <div>
-      <label for="name">Put Your Game Name On:</label>
+      <label htmlFor="name">Put Your Game Name On:</label>
       <input name='name'
              placeholder="Your Name" 
              value={props.player.name}
