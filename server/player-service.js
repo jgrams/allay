@@ -18,7 +18,7 @@ function get(req, res) {
 
 function name(req, res) {
   const { _id, player } = req.body;
-  Game.findOne({ _id }, { "admin": 0, "players.slug": 0  })
+  Game.findOne({ _id }, Game.hideAdminFields)
     .then(game => {
       var updatedPlayer = game.players.id(player._id);
       updatedPlayer.name = player.name;
@@ -31,23 +31,5 @@ function name(req, res) {
       res.status(500).send(err);
     });
 }
-
-function watchReady(req, res) {
-  let watchedOperations = {
-    $match: { $and: [
-        { "game.players.ready": { $eq: true } },
-        { operationType: "update" }
-      ]
-    },
-    $group: { _id: "$cust_id", total: { $sum: "$amount" } }
-  };
-
-  var cursor = Game.watch({ fullDocument: 'updateLookup' })
-  cursor.on('change', data => 
-    console.log(new Date(), data.fullDocument)
-  );
-  const { _id } = req.body;
-}
-
 
 module.exports = { get, name };

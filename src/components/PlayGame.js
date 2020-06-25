@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import api from '../api';
+import React from 'react';
 import Turn from './Turn';
 import Name from './Name';
 import ReadyPlayers from './ReadyPlayers';

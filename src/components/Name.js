@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import api from '../api';
 
 function Name(props) {
@@ -6,18 +6,21 @@ function Name(props) {
     api
       .name({_id: props.game._id, player: props.player})
       .then(result => {
-        console.log(result)
         props.setGame(result);
-        console.log(props);
       })
       .catch(err => {
         console.log(err);
       });
+    api
+      .ready(props.game._id)
+      .then(result => {
+        console.log(result)
+      })
   }
 
   return (
     <div>
-      <label htmlFor="name">Put Your Game Name On:</label>
+      <label htmlFor="name">Get Your Game Name On:</label>
       <input name='name'
              placeholder="Your Name" 
              value={props.player.name}

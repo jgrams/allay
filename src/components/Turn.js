@@ -1,5 +1,4 @@
 import React from 'react';
-import api from '../api';
 
 function SubmitName(props) {
 

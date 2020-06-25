@@ -36,13 +36,11 @@ const Admin = props => {
         <button onClick={props.createGame}>Save</button>
       </div>
     );
-  } else if (!props.game.admin) {
+  } else if (!props.admin) {
     return <div />;
   } else {
     return <ShareGame
             game={props.game}
-            shareGame={props.shareGame}
-            onCancel={props.handleShareCancel}
             onClick={props.handleShare}
           />;
   }

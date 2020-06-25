@@ -106,11 +106,10 @@ const gameService = {
     });
   },
 
-  ready(game) {
+  ready(gameId) {
     return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/ready/${game.id}`, {
+      fetch(`${baseAPI}/ready/${gameId}`, {
         method: 'GET',
-        body: JSON.stringify(game),
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'

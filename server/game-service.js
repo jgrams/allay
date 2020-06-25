@@ -6,7 +6,7 @@ require('./mongo').connect();
 function get(req, res) {
   const { id, player } = req.params;
   Game
-    .findOne({_id: id, "players.slug": player}, { "players.slug": 0, "admin": 0  })
+    .findOne({_id: id, "players.slug": player}, Game.hideAdminFields)
     .read(ReadPreference.NEAREST)
     .then(game => {
       res.json(game);

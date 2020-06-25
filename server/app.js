@@ -22,33 +22,9 @@ app.set('view engine', 'jade');
 
 app.use('/api', index);
 
-app.get('/stream', function (req, res, next) {
-  //when using text/plain it did not stream
-  //without charset=utf-8, it only worked in Chrome, not Firefox
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Transfer-Encoding', 'chunked');
-
-  res.write("Thinking...");
-  sendAndSleep(res, 1);
-});
-
-
 app.get('*', (req, res) => {
   res.sendFile('build/index.html', { root: root });
 });
-
-
-var sendAndSleep = function (response, counter) {
-  if (counter > 10) {
-    response.end();
-  } else {
-    response.write(" ;i=" + counter);
-    counter++;
-    setTimeout(function () {
-      sendAndSleep(response, counter);
-    }, 1000)
-  };
-};
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
