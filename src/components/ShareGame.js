@@ -13,10 +13,10 @@ function ShareGame(props){
     linkList = props.game.players.map(function(player, index) {
       let linkUrl = linkBase + player.slug;
       if (index !== 0) {
-        return <li>Shared Link: <a href={linkUrl}>{linkUrl}</a></li>
+        return <li key={index}>Shared Link: <a href={linkUrl}>{linkUrl}</a></li>
       } else {  
         let adminUrl = linkUrl + "&admin=" + props.game.admin;
-        return <li>Your Link: <a href={adminUrl}>{adminUrl}</a></li>
+        return <li key={index}>Your Link: <a href={adminUrl}>{adminUrl}</a></li>
       }
     });
   } else {
