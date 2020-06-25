@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import Admin from './Admin';
 import PlayGame from './PlayGame';
 import api from '../api';
@@ -17,67 +17,64 @@ function Game(props) {
       const player = urlParams.get('player')
       api.player({id: id, 
                   player: player})
-         .then(json => this.setState({player: json.players[0]}));
+         .then(json => setPlayer(json.players[0]));
       if (urlParams.has('admin')) {
-        slug = urlParams.get('admin');
         api.adminGet({id: id, 
                       player: player, 
-                      admin: slug})
-           .then(json => setGame(json));
+                      admin: urlParams.get('admin')})
+           .then(json => foundGame(json));
       } else { 
         api.get({id: id, 
                  player: player})
-           .then(json => setGame(json));   
+           .then(json => foundGame(json));   
       }
     }
-  });
+  // empty akrray cuases function to only get called on initial page load
+  }, []);
 
-  newGame() {
+  const foundGame = (game) => {
+    setGame(game);
+    setCurrentGame(true);
+  };
+
+  const newGame = () => {
     setGame({ numberPlayers: 3, timeLimit: '90' });
-    addGame(true);
-  }
+    setAddGame(true);
+  };
 
-  handleAddCancel() {
-    addGame(false);
+  const handleAddCancel = () => {
+    setAddGame(false);
     setGame(null);
-  }
+  };
 
-  createGame() {
-    let game = this.state.game;
+  const createGame = () => {
     api
       .create(game)
       .then(result => {
         setGame(result)
         setPlayer(result.players[0])
-        addGame(false)
-        currentGame(true)
+        setAddGame(false)
+        setCurrentGame(true)
       })
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
-  handleGameChange(event) {
+  const handleGameChange = (event) => {
     let modifiedGame = game;
     modifiedGame[event.target.name] = event.target.value;
     setGame({ modifiedGame });
   }
 
-  handlePlayerChange(event) {
+  const handlePlayerChange = (event) => {
     let modifiedPlayer = player;
     modifiedPlayer[event.target.name] = event.target.value;
     setPlayer({ modifiedPlayer });
   }
 
   return(
-    if (game && player) {
-      game = <PlayGame
-            game={game}
-            player={player}
-            setGame={setGame}
-            handlePlayerChange={handlePlayerChange} />
-    }
-    <div>
+    <div className="game">
       <div className="editarea">
         <Admin
           addGame={addGame}
@@ -86,12 +83,17 @@ function Game(props) {
           newGame={newGame}
           createGame={createGame}
           cancelNewGame={handleAddCancel}
-          shareGame={shareGame}
         />
       </div>
       <div className="playarea">
-        {game}
+        <PlayGame
+          game={game}
+          currentGame={currentGame}
+          player={player}
+          setGame={setGame}
+          handlePlayerChange={handlePlayerChange} />
       </div>
+    </div>
   );
 };
 

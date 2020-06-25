@@ -1,33 +1,34 @@
 import React, { useState } from 'react';
 
-const ShareGame = props => {
-  const [shareGame, setShareGame] = useState(props.shareGame);
+function ShareGame(props){
+  const [shareGame, setShareGame] = useState(true);
+
   let linkList;
   let buttonText;
+  const linkBase = "?id=" + props.game._id + "&player=";
+
 
   if (shareGame) {
-    let linkUrl;
-    let adminUrl;
-    const linkBase = "?id=" + props.game._id + "&player=";
     buttonText = "Hide Sharing";
-    
     linkList = props.game.players.map(function(player, index) {
-      linkUrl = linkBase + player.slug;
+      let linkUrl = linkBase + player.slug;
       if (index !== 0) {
         return <li>Shared Link: <a href={linkUrl}>{linkUrl}</a></li>
       } else {  
-        adminUrl = linkUrl + "&admin=" + props.game.admin;
+        let adminUrl = linkUrl + "&admin=" + props.game.admin;
         return <li>Your Link: <a href={adminUrl}>{adminUrl}</a></li>
       }
     });
   } else {
     buttonText = "Enable Sharing"
+    linkList = ""
   }
+  
 
   return (
     <div className="shareGame">
       <div>
-        <ul className="heros">
+        <ul className="readyPlayers">
           {linkList}
         </ul>
        <button onClick={() => setShareGame(!shareGame)}>{buttonText}</button>

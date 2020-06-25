@@ -13,7 +13,7 @@ const Admin = props => {
             <input
                 type="number"
                 min="2"
-                max="100"
+                max="20"
                 name="numberPlayers"
                 placeholder="Number of Players"
                 value={props.game.numberPlayers}
@@ -36,13 +36,12 @@ const Admin = props => {
         <button onClick={props.createGame}>Save</button>
       </div>
     );
-  } else if (!props.admin) {
+  } else if (!props.game.admin) {
     return <div />;
   } else {
     return <ShareGame
             game={props.game}
-            onClick={props.handleShare}
-          />;
+            onClick={props.handleShare} />;
   }
 };
 
