@@ -7,6 +7,7 @@ function Name(props) {
   const submitPlayerName = () => {
     let modifiedPlayer = props.player
     modifiedPlayer.name = name;
+    modifiedPlayer.ready = true;
     props.setPlayer(modifiedPlayer)
     api
       .name({_id: props.game._id, player: modifiedPlayer})

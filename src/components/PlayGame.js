@@ -8,7 +8,7 @@ function PlayGame(props) {
   let readyPlayers 
 
   if (props.currentGame && props.game) {
-    displayForm = props.game.round === 0 ? <Name player={props.player} game={props.game} setPlayer={props.setPlayer}/> : 
+    displayForm = props.game.round === 0 ? <Name player={props.player} game={props.game} setPlayer={props.setPlayer} setGame={props.setGame}/> : 
                                            <Turn player={props.player} game={props.game} submitTurn={props.submitTurn}/> 
     readyPlayers = <ReadyPlayers players={props.game.players} />
   }
