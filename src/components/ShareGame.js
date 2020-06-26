@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 function ShareGame(props){
   const [shareGame, setShareGame] = useState(true);
-
   let linkList;
   let buttonText;
   const linkBase = "?id=" + props.game._id + "&player=";

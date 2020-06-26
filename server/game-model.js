@@ -34,7 +34,5 @@ const gameSchema = new Schema({
     turnHistory: [turnSchema]
 });
 
-const hideAdminFields = { "players.slug": 0, "admin": 0  }
-
 const Game = mongoose.model('Game', gameSchema);
 module.exports = Game;

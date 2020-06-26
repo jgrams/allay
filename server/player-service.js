@@ -17,8 +17,8 @@ function get(req, res) {
 }
 
 function name(req, res) {
-  const { _id, player } = req.body;
-  Game.findOne({ _id }, Game.hideAdminFields)
+  const { id, player } = req.body;
+  Game.findOne({ _id: id,  "players.slug": player}, { "players.slug": 0, "admin": 0  })
     .then(game => {
       var updatedPlayer = game.players.id(player._id);
       updatedPlayer.name = player.name;
