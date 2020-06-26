@@ -21,11 +21,11 @@ function Game(props) {
         api.adminGet({id: id, 
                       player: player, 
                       admin: urlParams.get('admin')})
-           .then(json => foundGame(json));
+           .then(json => findGame(json));
       } else { 
         api.get({id: id, 
                  player: player})
-           .then(json => foundGame(json));   
+           .then(json => findGame(json));   
       }
     }
   // empty array causes this function to only get called on initial page load
@@ -37,11 +37,32 @@ function Game(props) {
     setCurrentGame(true)
   };
 
-  const foundGame = (game) => {
+  const findGame = (game) => {
     setGame(game);
     setCurrentGame(true);
   };
 
+  const modifyGame = (newGame) => {
+    setGame({...newGame, ...game});
+  };
+
+  const modifyPlayers = (players) => {
+    let modifiedGame = game;
+    players.map((newPlayer, index) => {
+      modifiedGame.players[index] = {...modifiedGame.players[index], ...newPlayer}
+    });
+    setGame(modifiedGame);
+  };
+
+  const modifyPlayer = (user) => {
+    setPlayer({...player, ...user});
+  };
+
+  const display = currentGame && player ? <PlayGame
+                                            game={game}
+                                            player={player}
+                                            modifyPlayers={modifyPlayers}
+                                            modifyPlayer={modifyPlayer} /> : ''
   return(
     <div className="game">
       <Admin
@@ -50,12 +71,7 @@ function Game(props) {
         currentGame={currentGame}
         setCurrentGame={setCurrentGame}
       />
-      <PlayGame
-        game={game}
-        currentGame={currentGame}
-        player={player}
-        setGame={setGame}
-        setPlayer={setPlayer} />
+      {display}
     </div>
   );
 };

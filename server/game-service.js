@@ -50,7 +50,7 @@ function create(req, res) {
 }
 
 function ready(req, res) {
-  const { gameId } = req.params;
+  const { id, player } = req.params;
   let watchedOperations = {
     $match: { $and: [
         { "game.players.ready": { $eq: true } },

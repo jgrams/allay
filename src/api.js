@@ -106,9 +106,9 @@ const gameService = {
     });
   },
 
-  ready(gameId) {
+  ready(gameId, playerSlug) {
     return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/ready/${gameId}`, {
+      fetch(`${baseAPI}/ready/${gameId}/${playerSlug}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

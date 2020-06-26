@@ -8,15 +8,19 @@ function Name(props) {
     let modifiedPlayer = props.player
     modifiedPlayer.name = name;
     modifiedPlayer.ready = true;
-    props.setPlayer(modifiedPlayer)
     api
       .name({_id: props.game._id, player: modifiedPlayer})
       .then(result => {
-        props.setGame(result);
+        props.modifyPlayers(result.players)
+        props.modifyPlayer(modifiedPlayer);
       })
       .catch(err => {
         console.log(err);
       });
+    api.ready(props.game._id, props.player.slug)
+       .then(result => {
+        console.log(result);
+       })
   }
 
   return (
