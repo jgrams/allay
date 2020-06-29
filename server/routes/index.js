@@ -20,8 +20,7 @@ router.put('/game', (req, res) => {
   gameService.create(req, res);
 });
 
-router.get('/game/ready/:id', function (req, res, next) {
-  console.log(req)
+router.get('/ready/:id', function (req, res) {
   gameService.ready(req, res);
 });
 

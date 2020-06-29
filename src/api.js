@@ -107,7 +107,7 @@ const gameService = {
   },
 
   ready(gameId) {
-    const url = `${baseAPI}/game/ready/${gameId}`
+    const url = `${baseAPI}/ready/${gameId}`
     console.log(url)
     return new EventSource(url)
   },

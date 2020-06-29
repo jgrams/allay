@@ -57,7 +57,7 @@ function ready(req, res) {
     'Connection': 'keep-alive',
     'Cache-Control': 'no-cache'
   };
-  res.set(headers)
+  res.set(JSON.stringify(headers));
   res.writeHead(200, headers);
   res.write(':connection successful')
   const pipeline = [{$match: { 'documentKey._id': new mongoose.Types.ObjectId(id) }}]
