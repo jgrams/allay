@@ -106,21 +106,10 @@ const gameService = {
     });
   },
 
-  ready(gameId, playerSlug) {
-    return new Promise((resolve, reject) => {
-      fetch(`${baseAPI}/ready/${gameId}/${playerSlug}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(result => result.json())
-        .then(json => resolve(json))
-        .catch(err => {
-          reject(err);
-        });
-    });
+  ready(gameId) {
+    const url = `${baseAPI}/game/ready/${gameId}`
+    console.log(url)
+    return new EventSource(url)
   },
 
 };

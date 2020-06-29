@@ -42,10 +42,6 @@ function Game(props) {
     setCurrentGame(true);
   };
 
-  const modifyGame = (newGame) => {
-    setGame({...newGame, ...game});
-  };
-
   const modifyPlayers = (players) => {
     let modifiedGame = game;
     players.map((newPlayer, index) => {

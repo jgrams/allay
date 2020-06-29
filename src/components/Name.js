@@ -17,10 +17,11 @@ function Name(props) {
       .catch(err => {
         console.log(err);
       });
-    api.ready(props.game._id, props.player.slug)
-       .then(result => {
-        console.log(result);
-       })
+    const changeStream = api.ready(props.game._id)
+    changeStream.onmessage = e => console.log(JSON.parse(e.data));
+    changeStream.onerror = function(err) {
+      console.error("EventSource failed:", err);
+    };
   }
 
   return (

@@ -1,5 +1,6 @@
 const Game = require('./game-model');
 const ReadPreference = require('mongodb').ReadPreference;
+var mongoose = require('mongoose');
 
 require('./mongo').connect();
 
@@ -50,21 +51,23 @@ function create(req, res) {
 }
 
 function ready(req, res) {
-  const { id, player } = req.params;
-  let watchedOperations = {
-    $match: { $and: [
-        { "game.players.ready": { $eq: true } },
-        { operationType: "update" }
-      ]
-    },
-    $group: { _id: "$cust_id", total: { $sum: "$amount" } }
+  const { id } = req.params;
+  const headers = {
+    'Content-Type': 'text/event-stream',
+    'Connection': 'keep-alive',
+    'Cache-Control': 'no-cache'
   };
-
-  var cursor = Game.watch({ fullDocument: 'updateLookup' })
-  cursor.on('change', data => 
-    console.log(new Date(), data.fullDocument)
-  );
-  const { _id } = req.body;
+  res.set(headers)
+  res.writeHead(200, headers);
+  res.write(':connection successful')
+  const pipeline = [{$match: { 'documentKey._id': new mongoose.Types.ObjectId(id) }}]
+  const options = {fullDocument: "updateLookup"}
+  var cursor = Game.watch(pipeline, options)
+  cursor.on('change', data => {
+    const formattedData = `data: ${JSON.stringify(data.updateDescription.updatedFields)}\n\n`
+    console.log(formattedData)
+    res.write(formattedData)
+  });
 }
 
-module.exports = { get, create, adminGet };
+module.exports = { get, create, adminGet, ready };
