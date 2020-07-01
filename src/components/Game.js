@@ -28,7 +28,6 @@ function Game(props) {
            .then(json => findGame(json));   
       }
     }
-  // empty array causes this function to only get called on initial page load
   }, []);
 
   const createGame = (game) => {
@@ -42,30 +41,24 @@ function Game(props) {
     setCurrentGame(true);
   };
 
-  const modifyPlayers = (players) => {
-    let modifiedGame = game;
-    players.map((newPlayer, index) => {
-      modifiedGame.players[index] = {...modifiedGame.players[index], ...newPlayer}
-    });
-    setGame(modifiedGame);
-  };
-
   const modifyPlayer = (user) => {
     setPlayer({...player, ...user});
   };
 
-  const setName = (updates) => {
-    console.log(game)
-    console.log(updates)
-    setPlayer({...game, ...updates});
+  const setPlayers = (updates) => {
+    const modifiedGame = game
+    Object.keys(updates).forEach((key, index) => {
+      const steps = key.split(".")
+      modifiedGame[steps[0]][steps[1]][steps[2]] = updates[key]
+    })
+    setGame(modifiedGame)
   };
 
 
   const display = currentGame && player ? <PlayGame
                                             game={game}
                                             player={player}
-                                            setName={setName}
-                                            modifyPlayers={modifyPlayers}
+                                            setPlayers={setPlayers}
                                             modifyPlayer={modifyPlayer} /> : ''
   return(
     <div className="game">

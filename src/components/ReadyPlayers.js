@@ -1,10 +1,9 @@
 import React from 'react';
+import ReadyPlayer from './ReadyPlayer';
 
 function ReadyPlayers(props) {
-	let ready = props.players.map(function(player, index) {
-	  if (player.ready) {
-	    return <div key={index}>{player.name} is ready.</div>
-	  }
+	const ready = props.players.map(function(player, index) {
+	    return <ReadyPlayer key={player._id} player={player} /> 
 	});
 
   return (
