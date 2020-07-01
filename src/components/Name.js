@@ -5,23 +5,19 @@ function Name(props) {
   const [name, setName] = useState(props.player.name);
 
   const submitPlayerName = () => {
+    let readySource = api.ready(props.game._id)
+    readySource.onmessage = e => {
+      props.setName(JSON.parse(e.data));
+    };
     let modifiedPlayer = props.player
-    modifiedPlayer.name = name;
-    modifiedPlayer.ready = true;
+    modifiedPlayer.name = name
+    modifiedPlayer.ready = true
     api
       .name({_id: props.game._id, player: modifiedPlayer})
-      .then(result => {
-        props.modifyPlayers(result.players)
-        props.modifyPlayer(modifiedPlayer);
-      })
+      .then(result => props.modifyPlayer(modifiedPlayer))
       .catch(err => {
-        console.log(err);
+        console.log(err)
       });
-    const changeStream = api.ready(props.game._id)
-    changeStream.onmessage = e => console.log(JSON.parse(e.data));
-    changeStream.onerror = function(err) {
-      console.error("EventSource failed:", err);
-    };
   }
 
   return (

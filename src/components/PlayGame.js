@@ -10,9 +10,9 @@ function PlayGame(props) {
     return <ReadyPlayers players={props.game.players} />
   } else {
     return props.game.round === 0 ? <Name player={props.player} 
-                                             game={props.game} 
-                                             modifyPlayers={props.modifyPlayers} 
-                                             modifyPlayer={props.modifyPlayer}/> : 
+                                          game={props.game} 
+                                          setName={props.setName} 
+                                          modifyPlayer={props.modifyPlayer}/> : 
                                        <Turn player={props.player} 
                                              game={props.game} 
                                              submitTurn={props.submitTurn}/>  

@@ -51,23 +51,20 @@ function create(req, res) {
 }
 
 function ready(req, res) {
-  const { id } = req.params;
+  req.socket.setTimeout(1700000000)
+  const { id } = req.params
   const headers = {
-    'Content-Type': 'text/event-stream',
+    'Content-Type': 'text/event-stream;charset=utf-8',
     'Connection': 'keep-alive',
-    'Cache-Control': 'no-cache'
-  };
-  res.set(JSON.stringify(headers));
-  res.writeHead(200, headers);
-  res.write(':connection successful')
+    'Cache-Control': 'no-cache, no-transform'
+  }
+  res.writeHead(200, headers)
   const pipeline = [{$match: { 'documentKey._id': new mongoose.Types.ObjectId(id) }}]
   const options = {fullDocument: "updateLookup"}
   var cursor = Game.watch(pipeline, options)
   cursor.on('change', data => {
-    const formattedData = `data: ${JSON.stringify(data.updateDescription.updatedFields)}\n\n`
-    console.log(formattedData)
-    res.write(formattedData)
-  });
+    res.write(`data: ${JSON.stringify(data.updateDescription.updatedFields)}\n\n`)
+  })
 }
 
 module.exports = { get, create, adminGet, ready };

@@ -17,7 +17,7 @@ router.get('/player/:id/:player', (req, res) => {
 });
 
 router.put('/game', (req, res) => {
-  gameService.create(req, res);
+  gameService.create(req, res);                                                                                            
 });
 
 router.get('/ready/:id', function (req, res) {

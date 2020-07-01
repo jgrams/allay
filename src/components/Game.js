@@ -54,9 +54,17 @@ function Game(props) {
     setPlayer({...player, ...user});
   };
 
+  const setName = (updates) => {
+    console.log(game)
+    console.log(updates)
+    setPlayer({...game, ...updates});
+  };
+
+
   const display = currentGame && player ? <PlayGame
                                             game={game}
                                             player={player}
+                                            setName={setName}
                                             modifyPlayers={modifyPlayers}
                                             modifyPlayer={modifyPlayer} /> : ''
   return(
