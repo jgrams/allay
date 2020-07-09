@@ -14,18 +14,18 @@ function Game(props) {
     if (urlParams.has('id') && urlParams.has('player')) {
       const id = urlParams.get('id');
       const player = urlParams.get('player')
-      api.player({id: id, 
+      api.player({id: id,
                   player: player})
          .then(json => setPlayer(json.players[0]));
       if (urlParams.has('admin')) {
-        api.adminGet({id: id, 
-                      player: player, 
+        api.adminGet({id: id,
+                      player: player,
                       admin: urlParams.get('admin')})
            .then(json => findGame(json));
-      } else { 
-        api.get({id: id, 
+      } else {
+        api.get({id: id,
                  player: player})
-           .then(json => findGame(json));   
+           .then(json => findGame(json));
       }
     }
   }, []);
@@ -41,6 +41,10 @@ function Game(props) {
     setCurrentGame(true);
   };
 
+  const setReady = () => {
+    console.log('readied')
+  };
+
   const modifyPlayer = (user) => {
     setPlayer({...player, ...user});
   };
@@ -51,7 +55,19 @@ function Game(props) {
       const steps = key.split(".")
       modifiedGame[steps[0]][steps[1]][steps[2]] = updates[key]
     })
+    if (checkReady(modifiedGame.players)) {
+      setReady()
+    }
     setGame(modifiedGame)
+  };
+
+  const checkReady = (players) => {
+    players.forEach((p) => {
+      if (p.ready === false) {
+        return false
+      }
+    });
+    return true
   };
 
 

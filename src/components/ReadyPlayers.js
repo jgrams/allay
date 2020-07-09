@@ -2,15 +2,11 @@ import React from 'react';
 import ReadyPlayer from './ReadyPlayer';
 
 function ReadyPlayers(props) {
-	const ready = props.players.map(function(player, index) {
-	    return <ReadyPlayer key={player._id} player={player} /> 
-	});
+  const listItems = props.players.map((player) =>
+			<ReadyPlayer ready={player.ready} name={player.name} />
+	);
 
-  return (
-    <div className="readyPlayers">
-      { ready }
-    </div>
-  );
-};
+	return ( <ul>{listItems}</ul>  );
+}
 
 export default ReadyPlayers;

@@ -1,19 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-function ReadyPlayer({player}) {
-	const [ready, setReady] = useState(player.ready);
+function ReadyPlayers(props) {
+	return props.ready ? <li>{props.name} is ready.</li> : null
+}
 
-	useEffect(() => {
-	  setReady(player.ready)
-	}, [ready]);
-  
-  if (ready) {
-  	return (
-      <div className="readyPlayer">
-        {player.name} is ready.
-      </div>
-  	)
-	} else return null
-};
-
-export default ReadyPlayer;
+export default ReadyPlayers;
